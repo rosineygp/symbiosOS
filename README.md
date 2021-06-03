@@ -13,6 +13,7 @@ Share x11, camera and pulseaudio over LXC/LXD containers.
     - [Edit x11 profile](#edit-x11-profile)
       - [Nvidia GPU](#nvidia-gpu)
       - [Intel iGPU](#intel-igpu)
+    - [Profile advices](#profile-advices)
   - [Guest configuration](#guest-configuration)
     - [Deploy a new guest](#deploy-a-new-guest)
     - [Guest login](#guest-login)
@@ -60,7 +61,7 @@ lxc profile create x11
 lxc profile edit x11
 ```
 
-Paste the following
+Paste the following `yaml`
 
 #### Nvidia GPU
 
@@ -110,9 +111,11 @@ used_by: []
 update yaml
 ```
 
-> device `video0` is optional.
->
-> Be careful about `uid` and `gid`
+### Profile advices
+
+- device `video0` is optional
+- pay attention about `uid` and `gid`, it will change as you current user
+- `cloud-config` cannot work, it depends of distributution support
 
 ## Guest configuration
 
@@ -126,12 +129,14 @@ lxc launch --profile default --profile x11 ubuntu:20.04 guest01
 
 ```shell
 lxc exec guest01 -- sudo --user ubuntu --login
+```
 
+<pre>
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
 
 ubuntu@guest01:~$
-```
+</pre>
 
 If you want distinguished colors for different guests `gnome-terminal`.
 
@@ -143,13 +148,12 @@ gnome-terminal --profile="Jackie Brown" -- bash -c "lxc exec guest01 -- sudo --u
 
 ### Checking guest
 
-Sometimes the commands not working because the `cloud-config` steps not finished.
-
 #### Video GLX
 
 ```shell
 glxinfo -B
-
+```
+<pre>
 direct rendering: Yes
 Memory info (GL_NVX_gpu_memory_info):
     Dedicated video memory: 6144 MB
@@ -169,13 +173,15 @@ OpenGL profile mask: (none)
 
 OpenGL ES profile version string: OpenGL ES 3.2 NVIDIA 450.119.03
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
-```
+</pre>
 
 #### Pulseaudio
 
 ```shell
 pactl info
+```
 
+<pre>
 Server String: tcp:127.0.0.1:4713
 Library Protocol Version: 33
 Server Protocol Version: 33
@@ -191,16 +197,20 @@ Default Channel Map: front-left,front-right
 Default Sink: alsa_output.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.analog-stereo
 Default Source: alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono-fallback
 Cookie: 9537:bf95
-```
+</pre>
 
 #### Camera
 
 ```shell
 v4l2-ctl --list-devices
+```
 
+<pre>
 Iriun Webcam (platform:v4l2loopback-000):
         /dev/video0
-```
+</pre>
+
+> Sometimes the commands above not working because the `cloud-config` steps not finished, if commands not working try to install manually `x11-apps mesa-utils pulseaudio v4l-utils`
 
 ## Terminal Launcher
 
