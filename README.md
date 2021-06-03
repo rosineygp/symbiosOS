@@ -29,7 +29,7 @@ pulseaudio -k
 ### Create blank profile
 
 ```shell
-lxc create profile x11
+lxc profile create x11
 ```
 
 ### Nvidia Profile
