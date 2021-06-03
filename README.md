@@ -1,29 +1,30 @@
-# symbiosOS
+# symbiosⵀS <!-- omit in toc -->
+
+> Symbiosis Operational System
 
 Share x11, camera and pulseaudio over LXC/LXD containers.
 
 # Table of contents <!-- omit in toc -->
 
-- [symbiosOS](#symbiosos)
-  - [Host configuration](#host-configuration)
-    - [Install dependencies](#install-dependencies)
-    - [Configure pulseaudio server](#configure-pulseaudio-server)
-  - [Profile](#profile)
-    - [Create blank profile](#create-blank-profile)
-    - [Edit x11 profile](#edit-x11-profile)
-      - [Nvidia GPU](#nvidia-gpu)
-      - [Intel iGPU](#intel-igpu)
-    - [Profile advices](#profile-advices)
-  - [Guest configuration](#guest-configuration)
-    - [Deploy a new guest](#deploy-a-new-guest)
-    - [Guest login](#guest-login)
-    - [Checking guest](#checking-guest)
-      - [Video GLX](#video-glx)
-      - [Pulseaudio](#pulseaudio)
-      - [Camera](#camera)
-  - [Terminal Launcher](#terminal-launcher)
-    - [Install](#install)
-    - [Usage](#usage)
+- [Host configuration](#host-configuration)
+  - [Install dependencies](#install-dependencies)
+  - [Configure pulseaudio server](#configure-pulseaudio-server)
+- [Profile](#profile)
+  - [Create blank profile](#create-blank-profile)
+  - [Edit x11 profile](#edit-x11-profile)
+    - [Nvidia GPU](#nvidia-gpu)
+    - [Intel iGPU](#intel-igpu)
+  - [Profile advices](#profile-advices)
+- [Guest configuration](#guest-configuration)
+  - [Deploy a new guest](#deploy-a-new-guest)
+  - [Guest login](#guest-login)
+  - [Checking guest](#checking-guest)
+    - [Video GLX](#video-glx)
+    - [Pulseaudio](#pulseaudio)
+    - [Camera](#camera)
+- [Terminal Launcher](#terminal-launcher)
+  - [Install](#install)
+  - [Usage](#usage)
 
 ## Host configuration
 
