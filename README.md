@@ -2,6 +2,28 @@
 
 Share x11, camera and pulseaudio over LXC/LXD containers.
 
+# Table of contents <!-- omit in toc -->
+
+- [symbiosOS](#symbiosos)
+  - [Host configuration](#host-configuration)
+    - [Install dependencies](#install-dependencies)
+    - [Configure pulseaudio server](#configure-pulseaudio-server)
+  - [Profile](#profile)
+    - [Create blank profile](#create-blank-profile)
+    - [Edit x11 profile](#edit-x11-profile)
+      - [Nvidia GPU](#nvidia-gpu)
+      - [Intel iGPU](#intel-igpu)
+  - [Guest configuration](#guest-configuration)
+    - [Deploy a new guest](#deploy-a-new-guest)
+    - [Guest login](#guest-login)
+    - [Checking guest](#checking-guest)
+      - [Video GLX](#video-glx)
+      - [Pulseaudio](#pulseaudio)
+      - [Camera](#camera)
+  - [Terminal Launcher](#terminal-launcher)
+    - [Install](#install)
+    - [Usage](#usage)
+
 ## Host configuration
 
 ### Install dependencies
@@ -13,16 +35,16 @@ https://linuxcontainers.org/lxd/getting-started-cli/#installation
 Append tcp module for pulseaudio at `/etc/pulse/default.pa`
 
 ```txt
-load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1" >> /etc/pulse/default.pa
 ```
 
-After it execute:
+Stop pulseaudio server
 
 ```shell
 pulseaudio -k
 ```
 
-> Mapping driver using `unix://` is flickering.
+> Mapping driver using `unix://` is flickering
 
 ## Profile
 
@@ -32,7 +54,15 @@ pulseaudio -k
 lxc profile create x11
 ```
 
-### Nvidia Profile
+### Edit x11 profile
+
+```shell
+lxc profile edit x11
+```
+
+Paste the following
+
+#### Nvidia GPU
 
 ```yaml
 config:
@@ -74,22 +104,28 @@ name: x11
 used_by: []
 ```
 
+#### Intel iGPU
+
+```yaml
+update yaml
+```
+
 > device `video0` is optional.
 >
-> Be careful about `uid` and `gid`.
+> Be careful about `uid` and `gid`
 
 ## Guest configuration
 
-### Deploy a new Guest
+### Deploy a new guest
 
 ```shell
-$ lxc launch --profile default --profile x11 ubuntu:20.04 guest01
+lxc launch --profile default --profile x11 ubuntu:20.04 guest01
 ```
 
 ### Guest login
 
 ```shell
-$ lxc exec guest01 -- sudo --user ubuntu --login
+lxc exec guest01 -- sudo --user ubuntu --login
 
 To run a command as administrator (user "root"), use "sudo <command>".
 See "man sudo_root" for details.
@@ -102,17 +138,17 @@ If you want distinguished colors for different guests `gnome-terminal`.
 https://mayccoll.github.io/Gogh/
 
 ```shell
-$ gnome-terminal --profile="Jackie Brown" -- bash -c "lxc exec guest01 -- sudo --user ubuntu --login"
+gnome-terminal --profile="Jackie Brown" -- bash -c "lxc exec guest01 -- sudo --user ubuntu --login"
 ```
 
 ### Checking guest
 
 Sometimes the commands not working because the `cloud-config` steps not finished.
 
-- Video GLX
+#### Video GLX
 
 ```shell
-$ glxinfo -B
+glxinfo -B
 
 direct rendering: Yes
 Memory info (GL_NVX_gpu_memory_info):
@@ -135,10 +171,10 @@ OpenGL ES profile version string: OpenGL ES 3.2 NVIDIA 450.119.03
 OpenGL ES profile shading language version string: OpenGL ES GLSL ES 3.20
 ```
 
-- Pulseaudio
+#### Pulseaudio
 
 ```shell
-$ pactl info
+pactl info
 
 Server String: tcp:127.0.0.1:4713
 Library Protocol Version: 33
@@ -157,10 +193,10 @@ Default Source: alsa_input.usb-C-Media_Electronics_Inc._USB_Audio_Device-00.mono
 Cookie: 9537:bf95
 ```
 
-- Camera
+#### Camera
 
 ```shell
-$ v4l2-ctl --list-devices
+v4l2-ctl --list-devices
 
 Iriun Webcam (platform:v4l2loopback-000):
         /dev/video0
@@ -168,7 +204,9 @@ Iriun Webcam (platform:v4l2loopback-000):
 
 ## Terminal Launcher
 
-Call gui apps in terminal without lock or output.
+### Install
+
+Just a small script to call GUI apps without lock terminal or print output
 
 ```shell
 mkdir -p ~/.local/bin/
@@ -181,14 +219,6 @@ EOF
 chmod +x ~/.local/bin/tl
 ```
 
-> needs to logout/login to reload profile
-
-Usage
-
-```shell
-$ tl google-chrome
-```
-
 Configure autocomplete for `tl`
 
 ```shell
@@ -199,6 +229,12 @@ _tl_completions() {
 
 complete -F _tl_completions tl
 EOF
+```
+
+### Usage
+
+```shell
+tl google-chrome
 ```
 
 > needs to logout/login to reload profile
