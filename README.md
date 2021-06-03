@@ -4,6 +4,22 @@
 
 Share x11, camera and pulseaudio over LXC/LXD containers.
 
+**main features**
+
+- near native graphics acceleration
+- nice audio quality
+- user profile isolation
+- fast startup
+- instances can use the same hardware resources (GPU, camera... etc)
+- low resources usage
+
+**reason**
+
+- isolate personal and work accounts
+- fast switch between accounts (one per workspace)
+- performance for video conference
+- multiple VPN connections 
+
 # Table of contents <!-- omit in toc -->
 
 - [Host configuration](#host-configuration)
