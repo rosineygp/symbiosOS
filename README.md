@@ -50,10 +50,10 @@ https://linuxcontainers.org/lxd/getting-started-cli/#installation
 
 ### Configure pulseaudio server
 
-Append tcp module for pulseaudio at `/etc/pulse/default.pa`
+Append following line at `/etc/pulse/default.pa` and enable tcp module for pulseaudio
 
 ```txt
-echo "load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1" >> /etc/pulse/default.pa
+load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
 ```
 
 Stop pulseaudio server
