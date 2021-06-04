@@ -1,3 +1,9 @@
+<p align="center">
+  <a alt="lines" href="https://rosineygp.github.io/symbiosOS">
+    <img src="assets/logo-bg.png"/>
+  </a>
+</p>
+
 # symbiosⵀS <!-- omit in toc -->
 
 > Symbiosis Operational System
