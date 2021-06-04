@@ -169,6 +169,7 @@ used_by: []
 - device `video0` is optional
 - pay attention about `uid` and `gid`, it will change as you current user
 - `cloud-config` cannot work, it depends of distributution support
+- check your current `$DISPLAY` and change if `/tmp/.X11-unix/X1` not work
 
 ## Guest configuration
 
