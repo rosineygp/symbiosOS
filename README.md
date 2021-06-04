@@ -125,7 +125,43 @@ used_by: []
 #### Intel iGPU
 
 ```yaml
-update yaml
+config:
+  environment.DISPLAY: :1
+  environment.PULSE_SERVER: tcp:127.0.0.1:4713
+  raw.idmap: both 1000 1000
+  user.user-data: |
+    #cloud-config
+    runcmd:
+      - 'sed -i "s/; enable-shm = yes/enable-shm = no/g" /etc/pulse/client.conf'
+      - 'echo export PULSE_SERVER=tcp:127.0.0.1:4713 | tee --append /home/ubuntu/.profile'
+    packages:
+      - x11-apps
+      - mesa-utils
+      - pulseaudio
+      - v4l-utils
+description: GUI LXD profile
+devices:
+  PASocket:
+    bind: container
+    connect: tcp:127.0.0.1:4713
+    listen: tcp:127.0.0.1:4713
+    type: proxy
+  X1:
+    bind: container
+    connect: unix:@/tmp/.X11-unix/X1
+    listen: unix:@/tmp/.X11-unix/X1
+    security.gid: "1000"
+    security.uid: "1000"
+    type: proxy
+  mygpu:
+    gid: "1000"
+    type: gpu
+  video0:
+    gid: "1000"
+    path: /dev/video1
+    type: unix-char
+name: x11
+used_by: []
 ```
 
 ### Profile advices
