@@ -331,9 +331,9 @@ Just a small script to call GUI apps without lock terminal or print output
 ```shell
 mkdir -p ~/.local/bin/
 
-cat << EOF > ~/.local/bin/tl
+cat << 'EOF' > ~/.local/bin/tl
 #!/bin/bash
-nohup "\$@" &>/dev/null & disown %%
+nohup "$@" &>/dev/null & disown %%
 EOF
 
 chmod +x ~/.local/bin/tl
@@ -342,12 +342,14 @@ chmod +x ~/.local/bin/tl
 Configure autocomplete for `tl`
 
 ```shell
-cat << EOF >> ~/.bashrc
+cat << 'EOF' >> ~/.bashrc
+
 _tl_completions() {
-  COMPREPLY=(\$(compgen -c "\${COMP_WORDS[1]}"))
+  COMPREPLY=($(compgen -c "${COMP_WORDS[1]}"))
 }
 
 complete -F _tl_completions tl
+
 EOF
 ```
 
