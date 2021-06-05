@@ -209,6 +209,8 @@ https://mayccoll.github.io/Gogh/
 gnome-terminal --profile="Jackie Brown" -- bash -c "lxc exec guest01 -- sudo --user ubuntu --login"
 ```
 
+**OR** use [Symbiosis OS Launcher](#symbiosis-os-launcher)
+
 ### Checking guest
 
 #### Video GLX
