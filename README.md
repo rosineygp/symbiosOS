@@ -44,9 +44,12 @@ Share x11, camera and pulseaudio over LXC/LXD containers.
     - [Video GLX](#video-glx)
     - [Pulseaudio](#pulseaudio)
     - [Camera](#camera)
-- [Terminal Launcher](#terminal-launcher)
+- [Symbiosis OS Launcher](#symbiosis-os-launcher)
   - [Install](#install)
   - [Usage](#usage)
+- [Terminal Launcher](#terminal-launcher)
+  - [Install](#install-1)
+  - [Usage](#usage-1)
 
 ## Host configuration
 
@@ -272,11 +275,58 @@ Iriun Webcam (platform:v4l2loopback-000):
 
 > Sometimes the commands above not working because the `cloud-config` steps not finished, if commands not working try to install manually `x11-apps mesa-utils pulseaudio v4l-utils`
 
-## Terminal Launcher
+## Symbiosis OS Launcher
 
 ### Install
 
+Open LXC ubuntu guests instances using `gnome-terminal`
+
+```shell
+mkdir -p ~/.local/bin/
+
+cat << 'EOF' > ~/.local/bin/sos
+#!/bin/bash
+
+CONTAINER="$1"
+PROFILE="$2"
+
+if [[ "$CONTAINER" == "" ]]; then
+    lxc list
+    exit 0
+fi
+
+read -ra status <<< "$(lxc info "$CONTAINER" | grep 'Status:')"
+
+if [[ "${status[0]}" == "" ]]; then
+    exit 1
+elif [[ "${status[1]}" != "Running" ]]; then
+    lxc start "$CONTAINER"
+fi
+
+if [[ "$PROFILE" != "" ]]; then
+    gnome-terminal --profile="$PROFILE" -- bash -c "lxc exec $CONTAINER -- sudo --user ubuntu --login"
+else
+    gnome-terminal -- bash -c "lxc exec $CONTAINER -- sudo --user ubuntu --login"
+fi
+
+EOF
+
+chmod +x ~/.local/bin/sos
+```
+
+### Usage
+
+<pre>
+sos                  # list all containers (lxc list)
+sos &lt;name&gt;           # start and login at ubuntu container
+sos &lt;name&gt; &lt;profile&gt; # start and login at ubuntu container using gnome-terminal profile
+</pre>
+
+## Terminal Launcher
+
 Just a small script to call GUI apps without lock terminal or print output
+
+### Install
 
 ```shell
 mkdir -p ~/.local/bin/
